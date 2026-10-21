@@ -77,16 +77,24 @@ def sanitize_and_fix_metadata(meta: Dict[str, Any], duration: float) -> Dict[str
     if not title:
         title = "Incredible Moment You Must Watch"
 
-    tags = meta.get("tags", [])
+    raw_tags = meta.get("tags", [])
+    if isinstance(raw_tags, str):
+        raw_tags = [t.strip() for t in raw_tags.split(",") if t.strip()]
+
     cleaned_tags = []
-    for t in tags:
-        t_clean = CURRENCY_REGEX.sub("", t)
+    for t in raw_tags:
+        t_clean = CURRENCY_REGEX.sub("", str(t))
         t_clean = MAGNITUDE_REGEX.sub("", t_clean).strip()
-        if t_clean and t_clean not in cleaned_tags:
+        if t_clean and len(t_clean) > 1 and t_clean not in cleaned_tags:
             cleaned_tags.append(t_clean)
     
-    while len(cleaned_tags) < 10:
-        cleaned_tags.append(f"video highlight {len(cleaned_tags)+1}")
+    fallback_terms = ["funny moments", "viral video", "daily humor", "trending shorts", "laugh out loud", "family comedy", "cute clips", "best reactions", "watch till end", "hilarious clip", "top moments", "must watch video"]
+    idx = 0
+    while len(cleaned_tags) < 12:
+        cand = fallback_terms[idx % len(fallback_terms)]
+        if cand not in cleaned_tags:
+            cleaned_tags.append(cand)
+        idx += 1
     if len(cleaned_tags) > 15:
         cleaned_tags = cleaned_tags[:15]
         
@@ -94,14 +102,17 @@ def sanitize_and_fix_metadata(meta: Dict[str, Any], duration: float) -> Dict[str
         cleaned_tags.pop()
 
     raw_hashtags = meta.get("hashtags", [])
+    if isinstance(raw_hashtags, str):
+        raw_hashtags = [h.strip() for h in re.findall(r"#\w+", raw_hashtags)]
+
     hashtags = []
     for h in raw_hashtags:
-        h_clean = h.strip()
+        h_clean = str(h).strip()
         if not h_clean.startswith("#"):
             h_clean = f"#{h_clean}"
         h_clean = CURRENCY_REGEX.sub("", h_clean)
-        h_clean = MAGNITUDE_REGEX.sub("", h_clean)
-        if h_clean and h_clean != "#" and h_clean not in hashtags:
+        h_clean = MAGNITUDE_REGEX.sub("", h_clean).strip()
+        if h_clean and len(h_clean) > 2 and h_clean not in hashtags:
             hashtags.append(h_clean)
 
     if duration <= 60.0:
@@ -111,10 +122,10 @@ def sanitize_and_fix_metadata(meta: Dict[str, Any], duration: float) -> Dict[str
             else:
                 hashtags.append("#shorts")
 
-    fallback_tags = ["#viral", "#trending", "#daily"]
+    fallback_ht = ["#viral", "#trending", "#dailycomedy", "#funny", "#humor"]
     idx = 0
     while len(hashtags) < 3:
-        cand = fallback_tags[idx % len(fallback_tags)]
+        cand = fallback_ht[idx % len(fallback_ht)]
         if cand not in hashtags:
             hashtags.append(cand)
         idx += 1
@@ -125,7 +136,6 @@ def sanitize_and_fix_metadata(meta: Dict[str, Any], duration: float) -> Dict[str
     raw_desc = CURRENCY_REGEX.sub("", raw_desc)
     raw_desc = MAGNITUDE_REGEX.sub("", raw_desc).strip()
     
-    # Description separator fix: clean formatting
     hashtags_block = " ".join(hashtags)
     if raw_desc:
         description = f"{raw_desc}\n\n{hashtags_block}\n\nGladys Garza Official Channel"
@@ -150,8 +160,8 @@ def generate_metadata_from_gemini(video_path: Path, model_name: str = "gemini-fl
         "Rules:\n"
         "1. title: Under 60 characters, engaging and descriptive of the actual visual content.\n"
         "2. description: 2-3 sentences describing what happens in the video.\n"
-        "3. tags: Exactly 12 to 14 relevant tags. Total comma-separated length must be under 400 characters.\n"
-        "4. hashtags: Exactly 3 relevant hashtags starting with # (include #shorts if video is under 60 seconds).\n"
+        "3. tags: A JSON array of 12 to 14 relevant string phrases (e.g. [\"funny moments\", \"grandma reaction\"]). Total comma-separated length must be under 400 characters.\n"
+        "4. hashtags: A JSON array of exactly 3 relevant hashtags starting with # (e.g. [\"#funny\", \"#comedy\", \"#shorts\"]). Must include #shorts if under 60 seconds.\n"
         "5. topic: One short sentence identifying the exact visual topic/niche.\n"
         "ABSOLUTELY FORBIDDEN:\n"
         "- Do NOT include any currency symbols ($ , € , £ , ¥ , ₹) or codes (USD, EUR, etc.).\n"
