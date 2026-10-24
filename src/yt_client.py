@@ -52,11 +52,35 @@ def upload_video_resumable(
         media_body=media
     )
 
-    response = None
-    while response is None:
-        status, response = request.next_chunk()
-
-    return response
+    uploads_playlist_id = "UUpbdybKlXfPCW4uBEqUDTIA"
+    try:
+        response = None
+        while response is None:
+            status, response = request.next_chunk()
+        return response
+    except Exception as e:
+        err_str = str(e)
+        status_code = getattr(getattr(e, "resp", None), "status", None)
+        if status_code == 409 or "alreadyExists" in err_str or "409" in err_str:
+            print(f"[upload] Notice: 409 alreadyExists encountered ({err_str}). Verifying via playlist {uploads_playlist_id}...")
+            try:
+                plist = service.playlistItems().list(
+                    playlistId=uploads_playlist_id,
+                    part="snippet",
+                    maxResults=10
+                ).execute()
+                for p_item in plist.get("items", []):
+                    p_snippet = p_item.get("snippet", {})
+                    p_title = p_snippet.get("title", "").strip()
+                    m_title = metadata.get("title", "").strip()
+                    if p_title == m_title or m_title.lower() in p_title.lower():
+                        vid_id = p_snippet.get("resourceId", {}).get("videoId")
+                        if vid_id:
+                            print(f"[upload] Confirmed video was uploaded: {vid_id}")
+                            return {"id": vid_id, "snippet": p_snippet}
+            except Exception as pe:
+                print(f"[upload] Failed to query playlist: {pe}")
+        raise
 
 def get_channel_info(service):
     resp = service.channels().list(

@@ -205,5 +205,37 @@ def generate_metadata_from_gemini(video_path: Path, model_name: str = "gemini-fl
     data = sanitize_and_fix_metadata(data, duration)
     data["gemini_file_id"] = uploaded.get("id")
     data["model"] = model_name
-    data["inferred_topic"] = data.get("topic", "General Video Highlight")
+
+    topic = data.get("topic")
+    if not topic or not str(topic).strip():
+        # One explicit retry for topic
+        retry_prompt = "What is the single visual topic/niche of this video in one short sentence? Return JSON: {\"topic\": \"...\"}"
+        try:
+            retry_payload = {
+                "contents": [
+                    {
+                        "parts": [
+                            {"fileData": {"fileUri": file_uri, "mimeType": "video/mp4"}},
+                            {"text": retry_prompt}
+                        ]
+                    }
+                ],
+                "generationConfig": {"temperature": 0.2, "responseMimeType": "application/json"}
+            }
+            r_resp = requests.post(url, json=retry_payload, timeout=60)
+            if r_resp.status_code == 200:
+                r_cand = r_resp.json().get("candidates", [])
+                if r_cand:
+                    r_text = r_cand[0].get("content", {}).get("parts", [{}])[0].get("text", "{}")
+                    r_data = json.loads(re.sub(r"^```json\s*|\s*```$", "", r_text.strip()))
+                    topic = r_data.get("topic")
+        except Exception:
+            pass
+
+    if not topic or not str(topic).strip():
+        print("[meta] topic fallback used", flush=True)
+        topic = "General Entertainment"
+
+    data["topic"] = topic
+    data["inferred_topic"] = topic
     return data
