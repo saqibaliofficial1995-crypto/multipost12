@@ -15,6 +15,14 @@
       "url": "https://youtu.be/PXWcFh7qqVQ",
       "inferred_topic": "babies",
       "gemini_file_id": "files/hq8jynlypdfq"
+    },
+    "17M6sQEozjXAtGwoPwEZl9Gmi4VTOzE8y": {
+      "video_id": "6PO8v5tYHs8",
+      "title": "Toddler's Hilarious Vacuum Lesson",
+      "uploaded_at": "2026-10-24T16:34:48.473400+00:00",
+      "url": "https://youtu.be/6PO8v5tYHs8",
+      "inferred_topic": "Toddler talking about vacuuming",
+      "gemini_file_id": "files/n96xl98wdc29"
     }
   },
   "history": [
@@ -29,6 +37,12 @@
       "drive_file_id": "1p_cU_eXqt4vCc_evaLDHhlH5TSeJ1xM2",
       "video_id": "PXWcFh7qqVQ",
       "timestamp": "2026-10-24T08:49:54.221722+00:00"
+    },
+    {
+      "run_id": "run_1792859686_17M6sQEo",
+      "drive_file_id": "17M6sQEozjXAtGwoPwEZl9Gmi4VTOzE8y",
+      "video_id": "6PO8v5tYHs8",
+      "timestamp": "2026-10-24T16:34:48.473419+00:00"
     }
   ]
 }
