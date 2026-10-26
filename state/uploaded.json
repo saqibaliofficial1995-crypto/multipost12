@@ -55,6 +55,14 @@
       "url": "https://youtu.be/g98x74THegs",
       "inferred_topic": "toddler playing with a stroller",
       "gemini_file_id": "files/5t15krtzussl"
+    },
+    "1tV26yEYivdxPzNqM5a3NWIhhVqQ0oke4": {
+      "video_id": "qQpgQZ8Ztig",
+      "title": "Baby Takes the Last Slice of Pizza",
+      "uploaded_at": "2026-10-26T14:12:34.447320+00:00",
+      "url": "https://youtu.be/qQpgQZ8Ztig",
+      "inferred_topic": "A baby eating pizza",
+      "gemini_file_id": "files/ll2fyj57b97b"
     }
   },
   "history": [
@@ -99,6 +107,12 @@
       "drive_file_id": "1L0dGFLxprg2cEsjPOgpZ7fH_JQ6Am3ny",
       "video_id": "g98x74THegs",
       "timestamp": "2026-10-26T06:06:23.904257+00:00"
+    },
+    {
+      "run_id": "run_1793023951_1tV26yEY",
+      "drive_file_id": "1tV26yEYivdxPzNqM5a3NWIhhVqQ0oke4",
+      "video_id": "qQpgQZ8Ztig",
+      "timestamp": "2026-10-26T14:12:34.447335+00:00"
     }
   ]
 }
