@@ -71,6 +71,14 @@
       "url": "https://youtu.be/n19IlNXQHlY",
       "inferred_topic": "A toddler explains how her mom packs her bag.",
       "gemini_file_id": "files/5vzls0oyo113"
+    },
+    "1Oindb6LUtG-yvKgVYNt11IcgNOR6_FBK": {
+      "video_id": "xNLULz-_Y7U",
+      "title": "Toddler Communicates with Voice Assistant",
+      "uploaded_at": "2026-10-27T13:09:56.147451+00:00",
+      "url": "https://youtu.be/xNLULz-_Y7U",
+      "inferred_topic": "A toddler interacting with a smart speaker",
+      "gemini_file_id": "files/5hru9w35myow"
     }
   },
   "history": [
@@ -127,6 +135,12 @@
       "drive_file_id": "1kEx4OnCk9NZSAVpw66-YElZdVschCg6m",
       "video_id": "n19IlNXQHlY",
       "timestamp": "2026-10-27T06:14:07.381295+00:00"
+    },
+    {
+      "run_id": "run_1793106592_1Oindb6L",
+      "drive_file_id": "1Oindb6LUtG-yvKgVYNt11IcgNOR6_FBK",
+      "video_id": "xNLULz-_Y7U",
+      "timestamp": "2026-10-27T13:09:56.147469+00:00"
     }
   ]
 }
