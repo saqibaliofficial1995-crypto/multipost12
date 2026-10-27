@@ -79,6 +79,14 @@
       "url": "https://youtu.be/xNLULz-_Y7U",
       "inferred_topic": "A toddler interacting with a smart speaker",
       "gemini_file_id": "files/5hru9w35myow"
+    },
+    "1hAu97Fo90Svzdhw7AgKyo--AU2VA_m8j": {
+      "video_id": "K0uMpoLUlHk",
+      "title": "Toddler's Hilarious Cleaning Trick",
+      "uploaded_at": "2026-10-27T18:42:58.497141+00:00",
+      "url": "https://youtu.be/K0uMpoLUlHk",
+      "inferred_topic": "A humorous skit about a baby hiding when told to clean",
+      "gemini_file_id": "files/3cxu795f3t76"
     }
   },
   "history": [
@@ -141,6 +149,12 @@
       "drive_file_id": "1Oindb6LUtG-yvKgVYNt11IcgNOR6_FBK",
       "video_id": "xNLULz-_Y7U",
       "timestamp": "2026-10-27T13:09:56.147469+00:00"
+    },
+    {
+      "run_id": "run_1793126575_1hAu97Fo",
+      "drive_file_id": "1hAu97Fo90Svzdhw7AgKyo--AU2VA_m8j",
+      "video_id": "K0uMpoLUlHk",
+      "timestamp": "2026-10-27T18:42:58.497161+00:00"
     }
   ]
 }
